@@ -7,7 +7,7 @@
     <title>@yield('title') </title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="manifest" href="site.webmanifest">
+{{--    <link rel="manifest" href="site.webmanifest">--}}
     <link rel="shortcut icon" type="image/x-icon" href="{{asset('public-theme/assets/img/favicon.ico')}}">
 
     <!-- CSS here -->
@@ -47,7 +47,7 @@
                         <div class="col-lg-3 col-md-2">
                             <!-- Logo -->
                             <div class="logo">
-                                <a href="/"><img src="{{asset('public-theme/assets/img/logo/logo.png')}}" alt=""></a>
+                                <a href="{{route('index')}}"><img src="{{asset('public-theme/assets/img/logo/logo.png')}}" alt=""></a>
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9">
@@ -56,25 +56,42 @@
                                 <div class="main-menu">
                                     <nav class="d-none d-lg-block">
                                         <ul id="navigation">
-                                            <li><a href="/">Home</a></li>
-                                            <li><a href="/pub/alljobs/">Find a Jobs </a></li>
-                                            {{-- <li><a href="about.html">About</a></li>
-                                            <li><a href="#">Page</a>
-                                                <ul class="submenu">
-                                                    <li><a href="blog.html">Blog</a></li>
-                                                    <li><a href="single-blog.html">Blog Details</a></li>
-                                                    <li><a href="elements.html">Elements</a></li>
-                                                    <li><a href="job_details.html">job Details</a></li>
-                                                </ul>
-                                            </li> --}}
-                                            <li><a href="/contact">Contact</a></li>
+                                            <li><a href="{{route('index')}}">Home</a></li>
+                                            <li><a href="{{route('publicjob.all')}}">Find a Jobs </a></li>
+                                            <li><a href="{{route('contact')}}">Contact</a></li>
                                         </ul>
                                     </nav>
                                 </div>
                                 <!-- Header-btn -->
                                 <div class="header-btn d-none f-right d-lg-block">
-                                    <a href="#" class="btn head-btn1">Register</a>
-                                    <a href="#" class="btn head-btn2">Login</a>
+                                    @guest
+                                        @if (Route::has('login'))
+                                               <a href="{{ route('login') }}" class="btn head-btn2">Login</a>
+                                        @endif
+
+                                            @if (Route::has('register'))
+                                                <a href="{{ route('register') }}" class="btn head-btn1">Register</a>
+                                            @endif
+
+                                    @else
+{{--                                        <li class="nav-item dropdown">--}}
+                                            <a id="navbarDropdown" href="#" class="text-secondary font-weight-bold pr-3" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                                               Welcome {{ Auth::user()->name }}
+                                            </a>
+
+{{--                                            <div class="btn head-btn2" aria-labelledby="navbarDropdown">--}}
+                                                <a class="text-danger font-weight-bold" href="{{ route('logout') }}"
+                                                   onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
+                                                    {{ __('Logout') }}
+                                                </a>
+
+                                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                                    @csrf
+                                                </form>
+{{--                                            </div>--}}
+{{--                                        </li>--}}
+                                    @endguest
                                 </div>
                             </div>
                         </div>
@@ -98,8 +115,8 @@
 
 
         <!-- Footer Start-->
-        <div class="footer-area footer-bg footer-padding">
-            <div class="container">
+        <div class="footer-area footer-bg">
+            <div class="container pt-5">
                 <div class="row d-flex justify-content-between">
                     <div class="col-xl-3 col-lg-3 col-md-4 col-sm-6">
                         <div class="single-footer-caption mb-50">
